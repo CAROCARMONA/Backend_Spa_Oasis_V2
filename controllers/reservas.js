@@ -14,7 +14,8 @@ function crearReserva(req, res) {
 
     nuevaReserva.save().then(
         (reservaGuardada) => {
-            res.status(200).send({ reservaCreada: reservaGuardada });
+           
+            res.status(200).send({ reservaCreada: reservaGuardada, message: "¡Reserva creada exitosamente!" });
         },
         err => {
             res.status(500).send({ message: "No se pudo crear la reserva. Intente nuevamente" });

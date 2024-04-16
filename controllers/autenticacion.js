@@ -5,12 +5,46 @@ var token = require('../helpers/autenticacion');
 var bcrypt = require('bcryptjs');
 
 
+function validarContrasena(contrasena) {
+    // Verificar longitud mínima
+    if (contrasena.length < 8) {
+        return false;
+    }
+
+    // Verificar al menos un carácter especial
+    var caracteresEspeciales = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (!caracteresEspeciales.test(contrasena)) {
+        return false;
+    }
+
+    // Verificar al menos un número
+    var numeros = /[0-9]+/;
+    if (!numeros.test(contrasena)) {
+        return false;
+    }
+
+    // Verificar al menos una letra mayúscula y una minúscula
+    var letrasMayusculas = /[A-Z]+/;
+    var letrasMinusculas = /[a-z]+/;
+    if (!letrasMayusculas.test(contrasena) || !letrasMinusculas.test(contrasena)) {
+        return false;
+    }
+
+    // La contraseña cumple con los criterios de seguridad
+    return true;
+}
+
 function registrarUsuario(req, resp){
     
     var parametros = req.body;
-
     var salt = bcrypt.genSaltSync(15);
     var contrasenaEncriptada = bcrypt.hashSync(parametros.password, salt);
+
+  // Validar la contraseña
+  if (!validarContrasena(parametros.password)) {
+    resp.status(400).send({ message: "La contraseña no cumple con los estándares de seguridad. Intente nuevamente" });
+    return;
+   }
 
     var nuevoUsuario = new Usuario();
     nuevoUsuario.nombre = parametros.nombre;

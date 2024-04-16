@@ -2,10 +2,7 @@
 var Pagos = require('../models/pagos');
 
 function crearPago(req, res) {
-    if (req.usuario.rol !== "Administrador") {
-        return res.status(403).send({ message: "No tiene permisos para crear pagos" });
-    }
-
+  
     var parametros = req.body;
 
     var nuevoPago = new Pagos({
@@ -18,7 +15,8 @@ function crearPago(req, res) {
 
     nuevoPago.save().then(
         (pagoGuardado) => {
-            res.status(200).send({ pagoCreado: pagoGuardado });
+            
+            res.status(200).send({ pagoCreado: pagoGuardado, message: "Nos pondremos en contacto contigo para terminar el proceso de pago." });
         },
         err => {
             res.status(500).send({ message: "No se pudo crear el pago. Intente nuevamente" });
@@ -50,9 +48,7 @@ function obtenerPagoPorId(req, res) {
         });
 }
 function actualizarPago(req, res) {
-    if (req.usuario.rol !== "Administrador") {
-        return res.status(403).send({ message: "No tiene permisos para actualizar pagos" });
-    }
+
 
     var pagoId = req.params.id;
     var nuevosDatos = req.body;

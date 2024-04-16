@@ -7,9 +7,12 @@ var disponibilidadController =require('../controllers/disponibilidad');
 var reservaController=require('../controllers/reservas');
 var pagoController =require('../controllers/pagos');
 var token = require('../helpers/autenticacion');
-
+var cors = require('cors');
 var routes = express.Router();
 
+
+// Habilitar CORS para todas las solicitudes
+routes.use(cors());
 
 // Funciones para la gestión de servicios
 routes.post('/api/servicio/crear', token.validarTokenUsuario, servicioController.crearServicio);
