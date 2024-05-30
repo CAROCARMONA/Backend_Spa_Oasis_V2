@@ -80,7 +80,13 @@ function iniciarSesion(req, resp){
                 if(usuarioEncontrado.rol === "Administrador"){
                     // Iniciar sesión para el rol de administrador
                     if(bcrypt.compareSync(passwordIngresado, usuarioEncontrado.password)){
-                        resp.status(200).send({message:"Usuario administrador logueado", token: token.obtenerTokenUsuario(usuarioEncontrado)})
+                        resp.status(200).send({message:"Usuario administrador logueado",
+                        nombre: usuarioEncontrado.nombre ,
+                        rol: usuarioEncontrado.rol ,
+                        _id: usuarioEncontrado._id ,
+                        token: token.obtenerTokenUsuario(usuarioEncontrado),
+                        
+                    })
                     }
                     else{
                         resp.status(403).send({message:"Contraseña no válida para administrador"});
@@ -89,7 +95,11 @@ function iniciarSesion(req, resp){
                 else if(usuarioEncontrado.rol === "Usuario"){
                     // Iniciar sesión para el rol de usuario básico
                     if(bcrypt.compareSync(passwordIngresado, usuarioEncontrado.password)){
-                        resp.status(200).send({message:"Usuario logueado", token: token.obtenerTokenUsuario(usuarioEncontrado)})
+                        resp.status(200).send({message:"Usuario logueado",
+                        nombre: usuarioEncontrado.nombre ,
+                        rol: usuarioEncontrado.rol ,
+                        _id: usuarioEncontrado._id ,
+                        token: token.obtenerTokenUsuario(usuarioEncontrado)})
                     }
                     else{
                         resp.status(403).send({message:"Contraseña no válida para usuario"});

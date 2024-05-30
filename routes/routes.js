@@ -7,30 +7,29 @@ var disponibilidadController =require('../controllers/disponibilidad');
 var reservaController=require('../controllers/reservas');
 var pagoController =require('../controllers/pagos');
 var token = require('../helpers/autenticacion');
-var cors = require('cors');
 var routes = express.Router();
 
-
-// Habilitar CORS para todas las solicitudes
-routes.use(cors());
 
 // Funciones para la gestión de servicios
 routes.post('/api/servicio/crear', token.validarTokenUsuario, servicioController.crearServicio);
 routes.put('/api/servicio/actualizar/:id', token.validarTokenUsuario, servicioController.actualizarServicio);
 routes.delete('/api/servicio/borrar/:id', token.validarTokenUsuario, servicioController.borrarServicio);
-routes.get('/api/servicio/buscarPorClasificacion/:clasificacion', token.validarTokenUsuario, servicioController.buscarServiciosPorClasificacion);
+routes.get('/api/servicio/buscarPorClasificacion/:clasificacion',  servicioController.buscarServiciosPorClasificacion);
 
 
 // Funciones para la gestión de disponibilidad horaria
 routes.post('/api/disponibilidad/crear', token.validarTokenUsuario, disponibilidadController.crearDisponibilidad);
 routes.put('/api/disponibilidad/actualizar/:id', token.validarTokenUsuario, disponibilidadController.actualizarDisponibilidad);
 routes.delete('/api/disponibilidad/eliminar/:id', token.validarTokenUsuario, disponibilidadController.eliminarDisponibilidad);
-routes.get('/api/disponibilidad/obtenerPorServicio/:servicioId', token.validarTokenUsuario, disponibilidadController.obtenerDisponibilidadPorServicio);
+routes.get('/api/disponibilidad/obtenerPorId/:id',token.validarTokenUsuario, disponibilidadController.obtenerDisponibilidadPorId);
+routes.get('/api/disponibilidad/obtenerPorServicio/:servicioId', disponibilidadController.obtenerDisponibilidadPorServicio);
+
 
 // Funciones para la gestión de reservas
 routes.post('/api/reserva/crear', token.validarTokenUsuario, reservaController.crearReserva);
 routes.get('/api/reserva/obtenerTodas', token.validarTokenUsuario, reservaController.obtenerTodasLasReservas);
 routes.get('/api/reserva/obtenerPorId/:id', token.validarTokenUsuario, reservaController.obtenerReservaPorId);
+routes.get('/api/reserva/obtenerPorUsuario/:id', token.validarTokenUsuario, reservaController.obtenerReservaPorIdUsuario);
 routes.put('/api/reserva/actualizar/:id', token.validarTokenUsuario, reservaController.actualizarReserva);
 routes.delete('/api/reserva/eliminar/:id', token.validarTokenUsuario, reservaController.eliminarReserva);
 

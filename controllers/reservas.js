@@ -6,16 +6,22 @@ function crearReserva(req, res) {
     var parametros = req.body;
 
     var nuevaReserva = new Reserva({
+        
         servicioId: parametros.servicioId,
         usuarioId: parametros.usuarioId,
+        disponibilidadId:parametros.disponibilidadId,
+        nombreUsuario:parametros.nombreUsuario,
+        nombreServicio:parametros.nombreServicio,
         fecha: parametros.fecha,
         estado: parametros.estado
     });
 
     nuevaReserva.save().then(
         (reservaGuardada) => {
-           
+            
             res.status(200).send({ reservaCreada: reservaGuardada, message: "¡Reserva creada exitosamente!" });
+            
+            
         },
         err => {
             res.status(500).send({ message: "No se pudo crear la reserva. Intente nuevamente" });
@@ -45,6 +51,27 @@ function obtenerReservaPorId(req, res) {
             res.status(500).send({ message: "Error al obtener la reserva", error: err });
         });
 }
+
+function obtenerReservaPorIdUsuario(req, res) {
+    const usuarioId = req.params.id;
+
+    Reserva.find({ usuarioId })
+        .then(reservas => {
+            if (!reservas.length) {
+                return res.status(404).send({ message: "No se encontraron reservas para este usuario" });
+            }
+            res.status(200).send(reservas);
+        })
+        .catch(err => {
+            res.status(500).send({ message: "Error al obtener las reservas", error: err });
+        });
+}
+
+
+
+
+
+
 function actualizarReserva(req, res) {
     var reservaId = req.params.id;
     var nuevosDatos = req.body;
@@ -76,5 +103,6 @@ module.exports = {
    eliminarReserva,
    obtenerTodasLasReservas,
    obtenerReservaPorId,
+   obtenerReservaPorIdUsuario,
    actualizarReserva
 }

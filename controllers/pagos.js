@@ -9,6 +9,7 @@ function crearPago(req, res) {
         reservaId: parametros.reservaId,
         monto: parametros.monto,
         fecha: parametros.fecha,
+        telefono: parametros.telefono,
         metodo: parametros.metodo,
         estado: parametros.estado
     });
